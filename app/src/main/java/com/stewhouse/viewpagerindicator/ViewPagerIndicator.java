@@ -9,9 +9,9 @@ import android.widget.RelativeLayout;
  * Created by Allwin-Eva on 15. 10. 14..
  */
 
+// TODO: Animation 연동.
+// TODO: ViewPager 연동.
 public class ViewPagerIndicator extends RelativeLayout {
-
-    private Context _context;
 
     private int _indicatorPage;
 
@@ -40,15 +40,13 @@ public class ViewPagerIndicator extends RelativeLayout {
     }
 
     public void initialize(Context context) {
-        _context = context;
-
-        _indicatorPage = 0;
+        _indicatorPage = -1;
 
         _indicatorBGView = null;
-        _indicatorBGColor = 0;
+        _indicatorBGColor = -1;
 
         _indicatorView = null;
-        _indicatorColor = 0;
+        _indicatorColor = -1;
     }
 
     public void setIndicatorBGColor(int indicatorBGColor) {
@@ -67,7 +65,7 @@ public class ViewPagerIndicator extends RelativeLayout {
         setBackgroundColor(_indicatorBGColor);
 
         if (this._indicatorBGView == null) {
-            _indicatorBGView = new RelativeLayout(_context);
+            _indicatorBGView = new RelativeLayout(getContext());
             addView(_indicatorBGView);
         }
 
@@ -77,7 +75,7 @@ public class ViewPagerIndicator extends RelativeLayout {
         _indicatorBGView.setLayoutParams(leftParams);
 
         if (this._indicatorView == null) {
-            _indicatorView = new RelativeLayout(_context);
+            _indicatorView = new RelativeLayout(getContext());
             _indicatorBGView.addView(_indicatorView);
         }
 

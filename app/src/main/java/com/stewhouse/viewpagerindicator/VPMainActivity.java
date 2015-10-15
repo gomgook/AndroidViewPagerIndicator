@@ -41,6 +41,7 @@ public class VPMainActivity extends AppCompatActivity implements View.OnClickLis
             indicator.setIndicatorBGColor(Color.BLUE);
             indicator.setIndicatorColor(Color.GRAY);
             indicator.setIndicatorPage(5);
+            indicator.setIndicatorIndex(1);
         }
     }
 
