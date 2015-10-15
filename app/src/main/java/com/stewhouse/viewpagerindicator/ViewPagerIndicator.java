@@ -3,6 +3,8 @@ package com.stewhouse.viewpagerindicator;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 /**
@@ -83,6 +85,12 @@ public class ViewPagerIndicator extends RelativeLayout {
         rodParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         _indicatorView.setBackgroundColor(_indicatorColor);
         _indicatorView.setLayoutParams(rodParams);
+
+        // TODO: working...
+        Animation anim = new TranslateAnimation(0, getMeasuredWidth() / _indicatorPage, 0, 0);
+        anim.setDuration(500);
+        anim.setFillAfter(true);
+        _indicatorBGView.startAnimation(anim);
 
         invalidate();
     }
