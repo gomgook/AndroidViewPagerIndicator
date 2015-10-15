@@ -11,55 +11,80 @@ import android.widget.RelativeLayout;
 
 public class ViewPagerIndicator extends RelativeLayout {
 
-    private RelativeLayout leftView;
-    private RelativeLayout rodView;
+    private Context _context;
+
+    private int _indicatorPage;
+
+    private RelativeLayout _indicatorBGView;
+    private int _indicatorBGColor;
+
+    private RelativeLayout _indicatorView;
+    private int _indicatorColor;
 
     public ViewPagerIndicator(Context context) {
         super(context);
 
-        initialize();
+        initialize(context);
     }
 
     public ViewPagerIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        initialize();
+        initialize(context);
     }
 
     public ViewPagerIndicator(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        initialize();
+        initialize(context);
     }
 
-    public void initialize() {
-        leftView = null;
-        rodView = null;
+    public void initialize(Context context) {
+        _context = context;
+
+        _indicatorPage = 0;
+
+        _indicatorBGView = null;
+        _indicatorBGColor = 0;
+
+        _indicatorView = null;
+        _indicatorColor = 0;
     }
 
-    // TODO: super 함수 세분화할 것.
-    public void setLayout(Context context, int bgColor, int rodColor, int page, int current) {
-        setBackgroundColor(bgColor);
+    public void setIndicatorBGColor(int indicatorBGColor) {
+        _indicatorBGColor = indicatorBGColor;
+    }
 
-        if (this.leftView == null) {
-            leftView = new RelativeLayout(context);
-            addView(leftView);
+    public void setIndicatorColor(int indicatorColor) {
+        _indicatorColor = indicatorColor;
+    }
+
+    public void setIndicatorPage(int indicatorPage) {
+        _indicatorPage = indicatorPage;
+    }
+
+    public void setIndicatorIndex(int current) {
+        setBackgroundColor(_indicatorBGColor);
+
+        if (this._indicatorBGView == null) {
+            _indicatorBGView = new RelativeLayout(_context);
+            addView(_indicatorBGView);
         }
 
-        LayoutParams leftParams = new LayoutParams((getMeasuredWidth() / page) * current, LayoutParams.MATCH_PARENT);
+        LayoutParams leftParams = new LayoutParams((getMeasuredWidth() / _indicatorPage) * current, LayoutParams.MATCH_PARENT);
         leftParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-        leftView.setBackgroundColor(Color.BLACK);
-        leftView.setLayoutParams(leftParams);
+        _indicatorBGView.setBackgroundColor(Color.BLACK);
+        _indicatorBGView.setLayoutParams(leftParams);
 
-        if (this.rodView == null) {
-            rodView = new RelativeLayout(context);
-            leftView.addView(rodView);
+        if (this._indicatorView == null) {
+            _indicatorView = new RelativeLayout(_context);
+            _indicatorBGView.addView(_indicatorView);
         }
 
-        LayoutParams rodParams = new LayoutParams(getMeasuredWidth() / page, LayoutParams.MATCH_PARENT);
+        LayoutParams rodParams = new LayoutParams(getMeasuredWidth() / _indicatorPage, LayoutParams.MATCH_PARENT);
         rodParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-        rodView.setBackgroundColor(rodColor);
-        rodView.setLayoutParams(rodParams);
+        _indicatorView.setBackgroundColor(_indicatorColor);
+        _indicatorView.setLayoutParams(rodParams);
 
         invalidate();
     }

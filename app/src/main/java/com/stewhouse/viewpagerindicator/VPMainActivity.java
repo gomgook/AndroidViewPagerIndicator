@@ -36,7 +36,12 @@ public class VPMainActivity extends AppCompatActivity implements View.OnClickLis
         super.onWindowFocusChanged(hasFocus);
 
         indicator = (ViewPagerIndicator) findViewById(R.id.indicator);
-        if (indicator != null) indicator.setLayout(this, Color.BLUE, Color.GRAY, 5, 3);
+        if (indicator != null) {
+            indicator.setBackgroundColor(Color.BLACK);
+            indicator.setIndicatorBGColor(Color.BLUE);
+            indicator.setIndicatorColor(Color.GRAY);
+            indicator.setIndicatorPage(5);
+        }
     }
 
     @Override
@@ -61,15 +66,15 @@ public class VPMainActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button) {
-            indicator.setLayout(this, Color.BLUE, Color.GRAY, 5, 1);
+            indicator.setIndicatorIndex(1);
         } else if (v.getId() == R.id.button2) {
-            indicator.setLayout(this, Color.BLUE, Color.GRAY, 5, 2);
+            indicator.setIndicatorIndex(2);
         } else if (v.getId() == R.id.button3) {
-            indicator.setLayout(this, Color.BLUE, Color.GRAY, 5, 3);
+            indicator.setIndicatorIndex(3);
         } else if (v.getId() == R.id.button4) {
-            indicator.setLayout(this, Color.BLUE, Color.GRAY, 5, 4);
+            indicator.setIndicatorIndex(4);
         } else if (v.getId() == R.id.button5) {
-            indicator.setLayout(this, Color.BLUE, Color.GRAY, 5, 5);
+            indicator.setIndicatorIndex(5);
         }
     }
 }
