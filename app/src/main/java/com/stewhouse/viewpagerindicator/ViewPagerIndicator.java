@@ -15,13 +15,15 @@ import android.widget.RelativeLayout;
 // TODO: ViewPager 연동.
 public class ViewPagerIndicator extends RelativeLayout {
 
-    private int _indicatorPage;
+    private int             _indicatorPage;
 
-    private RelativeLayout _indicatorBGView;
-    private int _indicatorBGColor;
+    private RelativeLayout  _indicatorBGView;
+    private int             _indicatorBGColor;
 
-    private RelativeLayout _indicatorView;
-    private int _indicatorColor;
+    private RelativeLayout  _indicatorView;
+    private int             _indicatorColor;
+
+    private int             _currentPage;
 
     public ViewPagerIndicator(Context context) {
         super(context);
@@ -49,6 +51,8 @@ public class ViewPagerIndicator extends RelativeLayout {
 
         _indicatorView = null;
         _indicatorColor = -1;
+
+        _currentPage = -1;
     }
 
     public void setIndicatorBGColor(int indicatorBGColor) {
@@ -86,11 +90,23 @@ public class ViewPagerIndicator extends RelativeLayout {
         _indicatorView.setBackgroundColor(_indicatorColor);
         _indicatorView.setLayoutParams(rodParams);
 
-        // TODO: working...
-        Animation anim = new TranslateAnimation(0, getMeasuredWidth() / _indicatorPage, 0, 0);
-        anim.setDuration(500);
-        anim.setFillAfter(true);
-        _indicatorBGView.startAnimation(anim);
+        if (_currentPage < 0 ) {
+            _currentPage = current;
+        }
+
+        if (_currentPage > current) {
+            Animation anim = new TranslateAnimation(((getMeasuredWidth() / _indicatorPage) * (_currentPage - current)), 0, 0, 0);
+            _currentPage = current;
+            anim.setDuration(500);
+            anim.setFillAfter(true);
+            _indicatorBGView.startAnimation(anim);
+        } else if (_currentPage < current) {
+            Animation anim = new TranslateAnimation(0 - ((getMeasuredWidth() / _indicatorPage) * (current - _currentPage)), 0, 0, 0);
+            _currentPage = current;
+            anim.setDuration(500);
+            anim.setFillAfter(true);
+            _indicatorBGView.startAnimation(anim);
+        }
 
         invalidate();
     }
