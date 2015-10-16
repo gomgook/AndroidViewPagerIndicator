@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
  */
 
 // TODO: ViewPager 연동.
+// TODO: 위아래 기능 추가.
 public class ViewPagerIndicator extends RelativeLayout {
 
     // Count of indicator max page.
