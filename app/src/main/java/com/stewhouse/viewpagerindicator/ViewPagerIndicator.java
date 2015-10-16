@@ -20,10 +20,12 @@ public class ViewPagerIndicator extends RelativeLayout {
     // Variables of indicator background view.
     private RelativeLayout  _indicatorBGView;
     private int             _indicatorBGColor;
+    private LayoutParams    _indicatorBGParams;
 
     // Variables of indicator view.
     private RelativeLayout  _indicatorView;
     private int             _indicatorColor;
+    private LayoutParams    _indicatorParams;
 
     // Count current page which indicator is pointing at.
     private int             _currentPage;
@@ -54,9 +56,11 @@ public class ViewPagerIndicator extends RelativeLayout {
 
         _indicatorBGView = null;
         _indicatorBGColor = -1;
+        _indicatorBGParams = null;
 
         _indicatorView = null;
         _indicatorColor = -1;
+        _indicatorParams = null;
 
         _currentPage = -1;
 
@@ -86,18 +90,23 @@ public class ViewPagerIndicator extends RelativeLayout {
             _indicatorView = new RelativeLayout(getContext());
             _indicatorBGView.addView(_indicatorView);
         }
+        if (_indicatorBGParams == null) {
+            _indicatorBGParams = new LayoutParams(getMeasuredWidth(), LayoutParams.MATCH_PARENT);
+            _indicatorBGParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        }
+        if (_indicatorParams == null) {
+            _indicatorParams = new LayoutParams(getMeasuredWidth() / _indicatorPage, LayoutParams.MATCH_PARENT);
+            _indicatorParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        }
 
         // Setting indicator background view's parameters.
-        LayoutParams indicatorBGParams = new LayoutParams((getMeasuredWidth() / _indicatorPage) * current, LayoutParams.MATCH_PARENT);
-        indicatorBGParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        _indicatorBGParams.setMargins(0 - ((getMeasuredWidth() / _indicatorPage) * (_indicatorPage - current)), 0, 0, 0);
         _indicatorBGView.setBackgroundColor(_indicatorBGColor);
-        _indicatorBGView.setLayoutParams(indicatorBGParams);
+        _indicatorBGView.setLayoutParams(_indicatorBGParams);
 
         // Setting indicator view's parameters.
-        LayoutParams indicatorParams = new LayoutParams(getMeasuredWidth() / _indicatorPage, LayoutParams.MATCH_PARENT);
-        indicatorParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         _indicatorView.setBackgroundColor(_indicatorColor);
-        _indicatorView.setLayoutParams(indicatorParams);
+        _indicatorView.setLayoutParams(_indicatorParams);
 
         // Setting indicator's animating.
         // If setIndicatorIndex() is called first time, current page should be initialized.
