@@ -7,7 +7,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 /**
- * Created by Allwin-Eva on 15. 10. 14..
+ * Created by Gomguk on 15. 10. 14..
  */
 
 // TODO: ViewPager 연동.
