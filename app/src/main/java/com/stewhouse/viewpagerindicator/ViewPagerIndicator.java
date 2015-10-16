@@ -10,20 +10,24 @@ import android.widget.RelativeLayout;
  * Created by Allwin-Eva on 15. 10. 14..
  */
 
-// TODO: Animation 연동.
 // TODO: ViewPager 연동.
 public class ViewPagerIndicator extends RelativeLayout {
 
+    // Count of indicator max page.
     private int             _indicatorPage;
 
+    // Variables of indicator background view.
     private RelativeLayout  _indicatorBGView;
     private int             _indicatorBGColor;
 
+    // Variables of indicator view.
     private RelativeLayout  _indicatorView;
     private int             _indicatorColor;
 
+    // Count current page which indicator is pointing at.
     private int             _currentPage;
 
+    // Variable of indicator's animation.
     private Animation       _indicatorAnimation;
 
     public ViewPagerIndicator(Context context) {
@@ -71,34 +75,45 @@ public class ViewPagerIndicator extends RelativeLayout {
     }
 
     public void setIndicatorIndex(int current) {
+
+        // If setIndicatorIndex() is called first time, Views related with indicator should be initialized and add to ViewPagerIndicator.
         if (this._indicatorBGView == null) {
             _indicatorBGView = new RelativeLayout(getContext());
             addView(_indicatorBGView);
         }
-
-        LayoutParams indicatorBGParams = new LayoutParams((getMeasuredWidth() / _indicatorPage) * current, LayoutParams.MATCH_PARENT);
-        indicatorBGParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-        _indicatorBGView.setBackgroundColor(_indicatorBGColor);
-        _indicatorBGView.setLayoutParams(indicatorBGParams);
-
         if (this._indicatorView == null) {
             _indicatorView = new RelativeLayout(getContext());
             _indicatorBGView.addView(_indicatorView);
         }
 
+        // Setting indicator background view's parameters.
+        LayoutParams indicatorBGParams = new LayoutParams((getMeasuredWidth() / _indicatorPage) * current, LayoutParams.MATCH_PARENT);
+        indicatorBGParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        _indicatorBGView.setBackgroundColor(_indicatorBGColor);
+        _indicatorBGView.setLayoutParams(indicatorBGParams);
+
+        // Setting indicator view's parameters.
         LayoutParams indicatorParams = new LayoutParams(getMeasuredWidth() / _indicatorPage, LayoutParams.MATCH_PARENT);
         indicatorParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         _indicatorView.setBackgroundColor(_indicatorColor);
         _indicatorView.setLayoutParams(indicatorParams);
 
+        // Setting indicator's animating.
+        // If setIndicatorIndex() is called first time, current page should be initialized.
         if (_currentPage < 0 ) {
             _currentPage = current;
         } else {
             if (_currentPage > current) {
+
+                // When the page is smaller than ViewPagerIndicator's current page, Indicator will be animated to left side.
                 _indicatorAnimation = new TranslateAnimation(((getMeasuredWidth() / _indicatorPage) * (_currentPage - current)), 0, 0, 0);
             } else if (_currentPage < current) {
+
+                // When the page is bigger than ViewPagerIndicator's current page, Indicator will be animated to right side.
                 _indicatorAnimation = new TranslateAnimation(0 - ((getMeasuredWidth() / _indicatorPage) * (current - _currentPage)), 0, 0, 0);
             } else {
+
+                // When the page is same with ViewPagerIndicator's current page, Indicator will not be animated.
                 _indicatorAnimation = new TranslateAnimation(0, 0, 0, 0);
             }
             _currentPage = current;
@@ -107,6 +122,7 @@ public class ViewPagerIndicator extends RelativeLayout {
             _indicatorBGView.startAnimation(_indicatorAnimation);
         }
 
+        // Refresh all views of ViewPagerIndicator.
         invalidate();
     }
 }
