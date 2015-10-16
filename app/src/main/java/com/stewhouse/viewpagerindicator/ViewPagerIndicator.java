@@ -1,7 +1,6 @@
 package com.stewhouse.viewpagerindicator;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -24,6 +23,8 @@ public class ViewPagerIndicator extends RelativeLayout {
     private int             _indicatorColor;
 
     private int             _currentPage;
+
+    private Animation       _indicatorAnimation;
 
     public ViewPagerIndicator(Context context) {
         super(context);
@@ -53,6 +54,8 @@ public class ViewPagerIndicator extends RelativeLayout {
         _indicatorColor = -1;
 
         _currentPage = -1;
+
+        _indicatorAnimation = null;
     }
 
     public void setIndicatorBGColor(int indicatorBGColor) {
@@ -68,44 +71,40 @@ public class ViewPagerIndicator extends RelativeLayout {
     }
 
     public void setIndicatorIndex(int current) {
-        setBackgroundColor(_indicatorBGColor);
-
         if (this._indicatorBGView == null) {
             _indicatorBGView = new RelativeLayout(getContext());
             addView(_indicatorBGView);
         }
 
-        LayoutParams leftParams = new LayoutParams((getMeasuredWidth() / _indicatorPage) * current, LayoutParams.MATCH_PARENT);
-        leftParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-        _indicatorBGView.setBackgroundColor(Color.BLACK);
-        _indicatorBGView.setLayoutParams(leftParams);
+        LayoutParams indicatorBGParams = new LayoutParams((getMeasuredWidth() / _indicatorPage) * current, LayoutParams.MATCH_PARENT);
+        indicatorBGParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        _indicatorBGView.setBackgroundColor(_indicatorBGColor);
+        _indicatorBGView.setLayoutParams(indicatorBGParams);
 
         if (this._indicatorView == null) {
             _indicatorView = new RelativeLayout(getContext());
             _indicatorBGView.addView(_indicatorView);
         }
 
-        LayoutParams rodParams = new LayoutParams(getMeasuredWidth() / _indicatorPage, LayoutParams.MATCH_PARENT);
-        rodParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        LayoutParams indicatorParams = new LayoutParams(getMeasuredWidth() / _indicatorPage, LayoutParams.MATCH_PARENT);
+        indicatorParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         _indicatorView.setBackgroundColor(_indicatorColor);
-        _indicatorView.setLayoutParams(rodParams);
+        _indicatorView.setLayoutParams(indicatorParams);
 
         if (_currentPage < 0 ) {
             _currentPage = current;
-        }
-
-        if (_currentPage > current) {
-            Animation anim = new TranslateAnimation(((getMeasuredWidth() / _indicatorPage) * (_currentPage - current)), 0, 0, 0);
+        } else {
+            if (_currentPage > current) {
+                _indicatorAnimation = new TranslateAnimation(((getMeasuredWidth() / _indicatorPage) * (_currentPage - current)), 0, 0, 0);
+            } else if (_currentPage < current) {
+                _indicatorAnimation = new TranslateAnimation(0 - ((getMeasuredWidth() / _indicatorPage) * (current - _currentPage)), 0, 0, 0);
+            } else {
+                _indicatorAnimation = new TranslateAnimation(0, 0, 0, 0);
+            }
             _currentPage = current;
-            anim.setDuration(500);
-            anim.setFillAfter(true);
-            _indicatorBGView.startAnimation(anim);
-        } else if (_currentPage < current) {
-            Animation anim = new TranslateAnimation(0 - ((getMeasuredWidth() / _indicatorPage) * (current - _currentPage)), 0, 0, 0);
-            _currentPage = current;
-            anim.setDuration(500);
-            anim.setFillAfter(true);
-            _indicatorBGView.startAnimation(anim);
+            _indicatorAnimation.setDuration(500);
+            _indicatorAnimation.setFillAfter(true);
+            _indicatorBGView.startAnimation(_indicatorAnimation);
         }
 
         invalidate();
