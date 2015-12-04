@@ -36,22 +36,22 @@ public class ViewPagerIndicator extends RelativeLayout {
     public ViewPagerIndicator(Context context) {
         super(context);
 
-        initialize(context);
+        initialize();
     }
 
     public ViewPagerIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        initialize(context);
+        initialize();
     }
 
     public ViewPagerIndicator(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        initialize(context);
+        initialize();
     }
 
-    public void initialize(Context context) {
+    public void initialize() {
         _indicatorPage = -1;
 
         _indicatorBGView = null;
@@ -82,22 +82,7 @@ public class ViewPagerIndicator extends RelativeLayout {
     public void setIndicatorIndex(int current) {
 
         // If setIndicatorIndex() is called first time, Views related with indicator should be initialized and add to ViewPagerIndicator.
-        if (this._indicatorBGView == null) {
-            _indicatorBGView = new RelativeLayout(getContext());
-            addView(_indicatorBGView);
-        }
-        if (this._indicatorView == null) {
-            _indicatorView = new RelativeLayout(getContext());
-            _indicatorBGView.addView(_indicatorView);
-        }
-        if (_indicatorBGParams == null) {
-            _indicatorBGParams = new LayoutParams(getMeasuredWidth(), LayoutParams.MATCH_PARENT);
-            _indicatorBGParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-        }
-        if (_indicatorParams == null) {
-            _indicatorParams = new LayoutParams(getMeasuredWidth() / _indicatorPage, LayoutParams.MATCH_PARENT);
-            _indicatorParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-        }
+        initViewsAndParams();
 
         // Setting indicator background view's parameters.
         _indicatorBGParams.setMargins(0 - ((getMeasuredWidth() / _indicatorPage) * (_indicatorPage - current)), 0, 0, 0);
@@ -134,5 +119,24 @@ public class ViewPagerIndicator extends RelativeLayout {
 
         // Refresh all views of ViewPagerIndicator.
         invalidate();
+    }
+
+    private void initViewsAndParams() {
+        if (_indicatorBGView == null) {
+            _indicatorBGView = new RelativeLayout(getContext());
+            addView(_indicatorBGView);
+        }
+        if (_indicatorView == null) {
+            _indicatorView = new RelativeLayout(getContext());
+            _indicatorBGView.addView(_indicatorView);
+        }
+        if (_indicatorBGParams == null) {
+            _indicatorBGParams = new LayoutParams(getMeasuredWidth(), LayoutParams.MATCH_PARENT);
+            _indicatorBGParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        }
+        if (_indicatorParams == null) {
+            _indicatorParams = new LayoutParams(getMeasuredWidth() / _indicatorPage, LayoutParams.MATCH_PARENT);
+            _indicatorParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        }
     }
 }
