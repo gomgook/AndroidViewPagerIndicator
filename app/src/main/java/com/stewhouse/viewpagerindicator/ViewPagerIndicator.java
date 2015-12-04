@@ -95,9 +95,7 @@ public class ViewPagerIndicator extends RelativeLayout {
 
         // Setting indicator's animating.
         // If setIndicatorIndex() is called first time, current page should be initialized.
-        if (_currentPage < 0 ) {
-            _currentPage = current;
-        } else {
+        if (_currentPage > 0 ) {
             if (_currentPage > current) {
 
                 // When the page is smaller than ViewPagerIndicator's current page, Indicator will be animated to left side.
@@ -111,11 +109,10 @@ public class ViewPagerIndicator extends RelativeLayout {
                 // When the page is same with ViewPagerIndicator's current page, Indicator will not be animated.
                 _indicatorAnimation = new TranslateAnimation(0, 0, 0, 0);
             }
-            _currentPage = current;
             _indicatorAnimation.setDuration(500);
-            _indicatorAnimation.setFillAfter(true);
             _indicatorBGView.startAnimation(_indicatorAnimation);
         }
+        _currentPage = current;
 
         // Refresh all views of ViewPagerIndicator.
         invalidate();
