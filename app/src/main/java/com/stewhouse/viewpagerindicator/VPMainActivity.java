@@ -29,20 +29,21 @@ public class VPMainActivity extends AppCompatActivity implements View.OnClickLis
         Button btn5 = (Button) findViewById(R.id.button5);
         btn5.setOnClickListener(this);
 
+        indicator = (ViewPagerIndicator) findViewById(R.id.indicator);
+        if (indicator != null) {
+            indicator.setBackgroundColor(Color.BLACK);
+            indicator.setIndicatorBGColor(Color.BLUE);
+            indicator.setIndicatorColor(Color.GRAY);
+        }
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        indicator = (ViewPagerIndicator) findViewById(R.id.indicator);
-        if (indicator != null) {
-            indicator.setBackgroundColor(Color.BLACK);
-            indicator.setIndicatorBGColor(Color.BLUE);
-            indicator.setIndicatorColor(Color.GRAY);
-            indicator.setIndicatorPage(5);
-            indicator.setIndicatorIndex(1);
-        }
+        // TODO: This is not an appropriate code... but HOW TO FIX IT EXCEPT onWindowFucusChanged?????? ARRRRRGHHHHH
+        indicator.setIndicatorPage(5);
+        indicator.setIndicatorIndex(1);
     }
 
     @Override
